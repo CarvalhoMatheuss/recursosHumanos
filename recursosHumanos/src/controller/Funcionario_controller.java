@@ -16,8 +16,6 @@ public class Funcionario_controller {
         try {
             BufferedReader arqEntrada;
             arqEntrada = new BufferedReader(new FileReader("Funcionario.txt"));
-            
-            
             memoria.delete(0, memoria.length());
             
             while ((linha = arqEntrada.readLine()) != null) {
@@ -32,8 +30,6 @@ public class Funcionario_controller {
             return false;
         }
     }
-
-    
     private boolean gravarDadosFuncionario() {
         try {
             BufferedWriter arqSaida;
@@ -46,8 +42,6 @@ public class Funcionario_controller {
             return false;
         }
     }
-
-   
     public boolean inserirDadosFuncionario(Funcionario reg) {
         try {
         	if (buscarIdFuncionario(reg.getId()) != null) {
@@ -100,8 +94,6 @@ public class Funcionario_controller {
 
                     return new Funcionario(idProcurado, nome, dataNsc, Integer.parseInt(id_dep));
                 }
-
-                
                 fim = memoria.indexOf("\n", inicio);
                 if (fim == -1) break;
                 inicio = fim + 1;
@@ -120,9 +112,6 @@ public class Funcionario_controller {
         int idProcurado = funcEditado.getId();
         int inicio = 0, fim, ultimo;
         String idStr;
-
-        
-
         while (inicio < memoria.length()) {
             try {
                 ultimo = memoria.indexOf("\t", inicio);
@@ -133,11 +122,7 @@ public class Funcionario_controller {
                 if (Integer.parseInt(idStr) == idProcurado) {
                     fim = memoria.indexOf("\n", inicio);
                     if (fim == -1) fim = memoria.length();
-
-                    
                     memoria.replace(inicio, fim + 1, funcEditado.toString()+ "\n");
-
-                   
                     return gravarDadosFuncionario();
                 }
 
@@ -188,14 +173,10 @@ public class Funcionario_controller {
     }
  
     public String consultarGeralFuncionario() {
-        
-        
         StringBuilder textoSaida = new StringBuilder(); 
         
         int inicio = 0, fim, ultimo, primeiro;
         String idStr, nome, dataNsc, idDepStr;
-
-        
         if (memoria.length() == 0) {
             return "Nenhum funcionário cadastrado.";
         }
@@ -204,38 +185,24 @@ public class Funcionario_controller {
 
         while (inicio < memoria.length()) {
             try {
-                
-                
-               
                 ultimo = memoria.indexOf("\t", inicio);
                 if (ultimo == -1) break;
                 idStr = memoria.substring(inicio, ultimo);
-
-                
                 primeiro = ultimo + 1;
                 ultimo = memoria.indexOf("\t", primeiro);
                 nome = memoria.substring(primeiro, ultimo);
-
-                
                 primeiro = ultimo + 1;
                 ultimo = memoria.indexOf("\t", primeiro);
                 dataNsc = memoria.substring(primeiro, ultimo);
-
-                
                 primeiro = ultimo + 1;
                 fim = memoria.indexOf("\n", primeiro);
                 if (fim == -1) fim = memoria.length();
                 idDepStr = memoria.substring(primeiro, fim);
-
-                
-                
                 textoSaida.append("ID: ").append(idStr).append("\n");
                 textoSaida.append("Nome: ").append(nome).append("\n");
                 textoSaida.append("Nascimento: ").append(dataNsc).append("\n");
                 textoSaida.append("Depto: ").append(idDepStr).append("\n");
                 textoSaida.append("-------------------------------\n");
-
-                
                 if (fim == memoria.length()) break; 
                 inicio = fim + 1;
 
@@ -252,24 +219,15 @@ public class Funcionario_controller {
     }
     public String consultarFuncionariosPorDepartamento(int idDepartamentoPesquisado) {
         StringBuilder textoSaida = new StringBuilder();
-        
-        
         Departamento_controller deptCtrl = new Departamento_controller();
         Departamento deptoEncontrado = deptCtrl.buscarIdDepartamento(idDepartamentoPesquisado);
-
-        
         if (deptoEncontrado == null) {
             return "Erro: O Departamento código " + idDepartamentoPesquisado + " não existe.";
         }
-
-        
         textoSaida.append("--- Funcionários do Depto: " + deptoEncontrado.getDescricao() + " ---\n\n");
-
-        
         int inicio = 0, fim, ultimo, primeiro;
         String idFunc, nome, dataNsc, idDepDoFuncionario;
         boolean achouAlgum = false;
-
         if (memoria.length() == 0) return "Nenhum funcionário cadastrado.";
 
         while (inicio < memoria.length()) {
@@ -278,24 +236,16 @@ public class Funcionario_controller {
                 ultimo = memoria.indexOf("\t", inicio);
                 if (ultimo == -1) break;
                 idFunc = memoria.substring(inicio, ultimo);
-
-               
                 primeiro = ultimo + 1;
                 ultimo = memoria.indexOf("\t", primeiro);
                 nome = memoria.substring(primeiro, ultimo);
-
-                
                 primeiro = ultimo + 1;
                 ultimo = memoria.indexOf("\t", primeiro);
                 dataNsc = memoria.substring(primeiro, ultimo);
-
-               
                 primeiro = ultimo + 1;
                 fim = memoria.indexOf("\n", primeiro);
                 if (fim == -1) fim = memoria.length();
                 idDepDoFuncionario = memoria.substring(primeiro, fim);
-
-                
                 if (Integer.parseInt(idDepDoFuncionario) == idDepartamentoPesquisado) {
                     textoSaida.append("ID Func: ").append(idFunc).append("\n");
                     textoSaida.append("Nome: ").append(nome).append("\n");
@@ -303,13 +253,10 @@ public class Funcionario_controller {
                     textoSaida.append("-------------------------\n");
                     achouAlgum = true;
                 }
-
-               
                 if (fim == memoria.length()) break;
                 inicio = fim + 1;
 
-            } catch (Exception e) {
-                
+            } catch (Exception e) { 
                 fim = memoria.indexOf("\n", inicio);
                 if (fim == -1) break;
                 inicio = fim + 1;
